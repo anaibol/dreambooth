@@ -329,7 +329,7 @@ class Predictor(BasePredictor):
         print("Uploading zip...")
 
         blob = bucket.blob('models/' + out_path)
-        blob.upload_from_filename(out_path)
+        blob.upload_from_filename(Path(out_path))
 
         print("Uploaded zip.")
 
