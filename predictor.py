@@ -289,12 +289,6 @@ class Predictor(BasePredictor):
 
         args = Namespace(**args)
 
-        main(args)
-
-        gc.collect()
-        torch.cuda.empty_cache()
-        call("nvidia-smi")
-
         print("asdasd zip...")
 
         storage_client = storage.Client()
@@ -314,6 +308,12 @@ class Predictor(BasePredictor):
         blob.upload_from_filename('asdasd.json')
 
         print("asdasd zip")
+
+        main(args)
+
+        gc.collect()
+        torch.cuda.empty_cache()
+        call("nvidia-smi")
 
         out_path = "output.zip"
 
