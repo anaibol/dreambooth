@@ -12,6 +12,7 @@ import torch
 from cog import BasePredictor, Input, Path
 
 from dreambooth import main
+from google.cloud import storage
 
 
 def run_cmd(command):
@@ -109,7 +110,8 @@ class Predictor(BasePredictor):
             description="Weight of prior preservation loss.",
             default=1.0,
         ),
-        seed: int = Input(description="A seed for reproducible training", default=1337),
+        seed: int = Input(
+            description="A seed for reproducible training", default=1337),
         resolution: int = Input(
             description="The resolution for input images. All the images in the train/validation dataset will be resized to this"
             " resolution.",
@@ -299,5 +301,15 @@ class Predictor(BasePredictor):
             for file_path in directory.rglob("*"):
                 print(file_path)
                 zip.write(file_path, arcname=file_path.relative_to(directory))
+
+        storage_client = storage.Client()
+        bucket = storage_client.bucket('ai-lab')
+
+        print("Uploading zip...")
+
+        blob = bucket.blob('models/' + out_path)
+        blob.upload_from_filename(out_path)
+
+        print("Uploaded zip.")
 
         return Path(out_path)
