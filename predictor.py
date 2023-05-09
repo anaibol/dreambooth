@@ -289,26 +289,6 @@ class Predictor(BasePredictor):
 
         args = Namespace(**args)
 
-        print("asdasd zip...")
-
-        storage_client = storage.Client()
-        bucket = storage_client.bucket('ai-lab-f0aa7.appspot.com')
-
-        asd = {
-            "name": "asdasd",
-            "description": "asdasd",
-            "tags": ["asdasd"],
-        }
-
-        # save asd to json
-        with open('asdasd.json', 'w') as outfile:
-            json.dump(asd, outfile)
-
-        blob = bucket.blob('models/' + 'asdasd.json')
-        blob.upload_from_filename('asdasd.json')
-
-        print("asdasd zip")
-
         main(args)
 
         gc.collect()
