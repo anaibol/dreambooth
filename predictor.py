@@ -1,3 +1,4 @@
+import json
 import os
 import gc
 import mimetypes
@@ -294,6 +295,26 @@ class Predictor(BasePredictor):
         torch.cuda.empty_cache()
         call("nvidia-smi")
 
+        print("asdasd zip...")
+
+        storage_client = storage.Client()
+        bucket = storage_client.bucket('ai-lab-f0aa7.appspot.com')
+
+        asd = {
+            "name": "asdasd",
+            "description": "asdasd",
+            "tags": ["asdasd"],
+        }
+
+        # save asd to json
+        with open('asdasd.json', 'w') as outfile:
+            json.dump(asd, outfile)
+
+        blob = bucket.blob('models/' + 'asdasd.json')
+        blob.upload_from_filename('asdasd.json')
+
+        print("asdasd zip")
+
         out_path = "output.zip"
 
         directory = Path(cog_output_dir)
@@ -303,7 +324,7 @@ class Predictor(BasePredictor):
                 zip.write(file_path, arcname=file_path.relative_to(directory))
 
         storage_client = storage.Client()
-        bucket = storage_client.bucket('ai-lab')
+        bucket = storage_client.bucket('ai-lab-f0aa7.appspot.com')
 
         print("Uploading zip...")
 
