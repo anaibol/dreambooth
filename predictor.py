@@ -89,7 +89,7 @@ class Predictor(BasePredictor):
         ),
         n_save_sample: int = Input(
             description="The number of samples to save.",
-            default=4,
+            default=1,
         ),
         save_guidance_scale: float = Input(
             description="CFG for save sample.",
@@ -116,7 +116,7 @@ class Predictor(BasePredictor):
         resolution: int = Input(
             description="The resolution for input images. All the images in the train/validation dataset will be resized to this"
             " resolution.",
-            default=512,
+            default=16,
         ),
         center_crop: bool = Input(
             description="Whether to center crop images before resizing to resolution",
@@ -132,12 +132,12 @@ class Predictor(BasePredictor):
         ),
         sample_batch_size: int = Input(
             description="Batch size (per device) for sampling images.",
-            default=4,
+            default=1,
         ),
         num_train_epochs: int = Input(default=1),
         max_train_steps: int = Input(
             description="Total number of training steps to perform.  If provided, overrides num_train_epochs.",
-            default=2000,
+            default=400,
         ),
         gradient_accumulation_steps: int = Input(
             description="Number of updates steps to accumulate before performing a backward/update pass.",
@@ -173,7 +173,7 @@ class Predictor(BasePredictor):
         ),
         use_8bit_adam: bool = Input(
             description="Whether or not to use 8-bit Adam from bitsandbytes.",
-            default=False,
+            default=True,
         ),
         adam_beta1: float = Input(
             default=0.9,
