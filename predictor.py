@@ -8,12 +8,13 @@ from zipfile import ZipFile
 from subprocess import call, check_call
 from argparse import Namespace
 import time
+
+import requests
 import torch
 
 from cog import BasePredictor, Input, Path
 
 from dreambooth import main
-from google.cloud import storage
 
 
 def run_cmd(command):
@@ -195,6 +196,10 @@ class Predictor(BasePredictor):
             default=1.0,
             description="Max gradient norm.",
         ),
+        gcs_presigned_url: str = Input(
+            description="A presigned URL for uploading checkpoints to GCS.",
+            default=None,
+        ),
         # save_interval: int = Input(
         #     default=10000,
         #     description="Save weights every N steps.",
@@ -285,6 +290,7 @@ class Predictor(BasePredictor):
             "logging_dir": "logs",
             "log_interval": 10,
             "hflip": False,
+            "gcs_presigned_url": gcs_presigned_url,
         }
 
         args = Namespace(**args)
@@ -303,13 +309,10 @@ class Predictor(BasePredictor):
                 print(file_path)
                 zip.write(file_path, arcname=file_path.relative_to(directory))
 
-        storage_client = storage.Client()
-        bucket = storage_client.bucket('ai-lab-f0aa7.appspot.com')
-
-        print("Uploading zip...")
-
-        blob = bucket.blob('models/' + out_path)
-        blob.upload_from_filename(Path(out_path))
+        if gcs_presigned_url is not None:
+            print("Uploading zip to presigned url...")
+            with open(out_path, "rb") as f:
+                requests.put(gcs_presigned_url, data=f)
 
         print("Uploaded zip.")
 
