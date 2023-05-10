@@ -196,7 +196,7 @@ class Predictor(BasePredictor):
             default=1.0,
             description="Max gradient norm.",
         ),
-        gcs_presigned_url: str = Input(
+        gcs_signed_url: str = Input(
             description="A presigned URL for uploading checkpoints to GCS.",
             default=None,
         ),
@@ -290,7 +290,7 @@ class Predictor(BasePredictor):
             "logging_dir": "logs",
             "log_interval": 10,
             "hflip": False,
-            "gcs_presigned_url": gcs_presigned_url,
+            "gcs_signed_url": gcs_signed_url,
         }
 
         args = Namespace(**args)
@@ -309,10 +309,10 @@ class Predictor(BasePredictor):
                 print(file_path)
                 zip.write(file_path, arcname=file_path.relative_to(directory))
 
-        if gcs_presigned_url is not None:
+        if gcs_signed_url is not None:
             print("Uploading zip to presigned url...")
             with open(out_path, "rb") as f:
-                requests.put(gcs_presigned_url, data=f)
+                requests.put(gcs_signed_url, data=f)
 
         print("Uploaded zip.")
 
