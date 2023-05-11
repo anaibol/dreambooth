@@ -7,6 +7,8 @@ from zipfile import ZipFile
 from subprocess import call, check_call
 from argparse import Namespace
 import time
+
+import requests
 import torch
 
 from cog import BasePredictor, Input, Path
