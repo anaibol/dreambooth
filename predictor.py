@@ -238,7 +238,8 @@ class Predictor(BasePredictor):
                 mt = mimetypes.guess_type(zip_info.filename)
                 if mt and mt[0] and mt[0].startswith("image/"):
                     zip_info.filename = os.path.basename(zip_info.filename)
-                    zip_ref.extract(zip_info, cog_instance_tmp_data)
+                    zip_ref.extract(zip_info, cog_instance_data)
+                    # zip_ref.extract(zip_info, cog_instance_tmp_data)
 
         print("Removing backgrounds...")
         # remove background
