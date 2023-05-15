@@ -14,6 +14,8 @@ import torch
 from cog import BasePredictor, Input, Path
 
 from dreambooth import main
+from pathlib import Path
+from rembg import remove, new_session
 
 
 def run_cmd(command):
@@ -223,6 +225,9 @@ class Predictor(BasePredictor):
                 shutil.rmtree(path)
             os.makedirs(path)
 
+        cog_instance_tmp_data = "cog_instance_tmp_data"
+
+        print("Extracting zip...")
         # extract zip contents, flattening any paths present within it
         with ZipFile(str(instance_data), "r") as zip_ref:
             for zip_info in zip_ref.infolist():
@@ -233,7 +238,21 @@ class Predictor(BasePredictor):
                 mt = mimetypes.guess_type(zip_info.filename)
                 if mt and mt[0] and mt[0].startswith("image/"):
                     zip_info.filename = os.path.basename(zip_info.filename)
-                    zip_ref.extract(zip_info, cog_instance_data)
+                    zip_ref.extract(zip_info, cog_instance_tmp_data)
+
+        print("Removing backgrounds...")
+        # remove background
+        session = new_session()
+
+        for path in os.listdir(cog_instance_tmp_data):
+            input_path = os.path.join(cog_instance_tmp_data, path)
+            output_path = os.path.join(cog_instance_data, path)
+
+            with open(input_path, 'rb') as i:
+                with open(output_path, 'wb') as o:
+                    input = i.read()
+                    output = remove(input, session=session)
+                    o.write(output)
 
         if class_data is not None:
             with ZipFile(str(class_data), "r") as zip_ref:
@@ -323,16 +342,17 @@ class Predictor(BasePredictor):
         out_path = "output.zip"
 
         directory = Path(cog_output_dir)
+
         with ZipFile(out_path, "w") as zip:
             for file_path in directory.rglob("*"):
                 print(file_path)
                 zip.write(file_path, arcname=file_path.relative_to(directory))
 
         if gcs_signed_url is not None:
-            print("Uploading zip to presigned url...")
+            print("Uploading zip to signed url...")
             with open(out_path, "rb") as f:
                 requests.put(gcs_signed_url, data=f)
 
-        print("Uploaded zip.")
+            print("Uploaded zip.")
 
         return Path(out_path)
