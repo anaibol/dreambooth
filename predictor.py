@@ -15,8 +15,6 @@ from cog import BasePredictor, Input, Path
 
 from dreambooth import main
 
-os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:512"
-
 
 def run_cmd(command):
     try:
