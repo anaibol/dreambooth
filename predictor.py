@@ -14,7 +14,6 @@ import torch
 from cog import BasePredictor, Input, Path
 
 from dreambooth import main
-from pathlib import Path
 from rembg import remove, new_session
 
 
@@ -238,22 +237,21 @@ class Predictor(BasePredictor):
                 mt = mimetypes.guess_type(zip_info.filename)
                 if mt and mt[0] and mt[0].startswith("image/"):
                     zip_info.filename = os.path.basename(zip_info.filename)
-                    zip_ref.extract(zip_info, cog_instance_data)
-                    # zip_ref.extract(zip_info, cog_instance_tmp_data)
+                    zip_ref.extract(zip_info, cog_instance_tmp_data)
 
-        # print("Removing backgrounds...")
-        # # remove background
-        # session = new_session()
+        print("Removing backgrounds...")
+        # remove background
+        session = new_session()
 
-        # for path in os.listdir(cog_instance_tmp_data):
-        #     input_path = os.path.join(cog_instance_tmp_data, path)
-        #     output_path = os.path.join(cog_instance_data, path)
+        for path in os.listdir(cog_instance_tmp_data):
+            input_path = os.path.join(cog_instance_tmp_data, path)
+            output_path = os.path.join(cog_instance_data, path)
 
-        #     with open(input_path, 'rb') as i:
-        #         with open(output_path, 'wb') as o:
-        #             input = i.read()
-        #             output = remove(input, session=session)
-        #             o.write(output)
+            with open(input_path, 'rb') as i:
+                with open(output_path, 'wb') as o:
+                    input = i.read()
+                    output = remove(input, session=session)
+                    o.write(output)
 
         if class_data is not None:
             with ZipFile(str(class_data), "r") as zip_ref:
