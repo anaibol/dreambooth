@@ -2,12 +2,10 @@ import os
 import gc
 import mimetypes
 import shutil
-import tempfile
 from zipfile import ZipFile
 from subprocess import call, check_call
 from argparse import Namespace
 import time
-import urllib.parse
 
 import requests
 import torch
