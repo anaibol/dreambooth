@@ -27,6 +27,19 @@ def run_cmd(command):
         sys.exit(1)
 
 
+def upload_file_to_signed_url(file_path, signed_url):
+    try:
+        with open(file_path, "rb") as f:
+            response = requests.put(signed_url, data=f)
+
+        if response.status_code == 200:
+            print("File uploaded successfully.")
+        else:
+            print(f"File upload failed. Status code: {response.status_code}")
+    except Exception as e:
+        print(f"An error occurred during file upload: {str(e)}")
+
+
 class Predictor(BasePredictor):
     def setup(self):
         # HACK: wait a little bit for instance to be ready
@@ -348,9 +361,8 @@ class Predictor(BasePredictor):
                 zip.write(file_path, arcname=file_path.relative_to(directory))
 
         if gcs_signed_url is not None:
-            print("Uploading zip to signed url...")
-            with open(out_path, "rb") as f:
-                requests.put(gcs_signed_url, data=f)
+            print("Uploading zip to signed URL...")
+            upload_file_to_signed_url(out_path, gcs_signed_url)
 
             print("Uploaded zip.")
 
