@@ -364,6 +364,6 @@ class Predictor(BasePredictor):
         if gcs_signed_url is not None:
             print("Uploading zip to signed URL...")
             upload_file_to_signed_url(
-                out_path, gcs_signed_url, "application/zip")
+                out_path, "https://storage.googleapis.com/ai-lab-f0aa7.appspot.com/models/p4ThSNXoYTMMLpulV6_4K.zip?GoogleAccessId=firebase-adminsdk-gbggj%40ai-lab-f0aa7.iam.gserviceaccount.com&Expires=1684870945&Signature=iiWEou5QbcafFhyi7pn1%2FgQKNiEJvZtrXkR51yyTqfMzohlA6yngxe1wcpU997vZbi%2BwjmdqgiuNRF0DasbtfBsxf%2F%2BE9k%2BXDMOHbvsd4g%2FU09x8QjYF9k8kXSd7ZYVttQPFFN%2FoeVDGeeQfJA%2F3dCAWcMZg%2FD4hDbk4Aa9W2QXO7P3Us7ZwOIbg%2BK1sE%2FyfXbnTgbXWvP9T1c2EZrce%2F9R%2BlQL00TKEUPPcYc1XfiPM31moLoWHGSJ%2BVDjvBy%2FannqTGNhdnBdNA7hkpM7ctja%2FO4c%2BLCcjfXXqLzAu%2BhECa8l93wOuIgPxwm0lbWjAbDZP13j8Y29TsIHACQzv7g%3D%3D", "application/zip")
 
         return Path(out_path)
