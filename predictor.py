@@ -27,11 +27,11 @@ def run_cmd(command):
         sys.exit(1)
 
 
-def upload_file_to_signed_url(file_path, signed_url):
+def upload_file_to_signed_url(file_path, signed_url, content_type):
     try:
         with open(file_path, "rb") as f:
-            response = requests.put(
-                signed_url, data=f, content_type="application/zip")
+            headers = {"Content-Type": content_type}
+            response = requests.put(signed_url, data=f, headers=headers)
 
         if response.status_code == 200:
             print("File uploaded successfully.")
@@ -363,8 +363,7 @@ class Predictor(BasePredictor):
 
         if gcs_signed_url is not None:
             print("Uploading zip to signed URL...")
-            upload_file_to_signed_url(out_path, gcs_signed_url)
-
-            print("Uploaded zip.")
+            upload_file_to_signed_url(
+                out_path, gcs_signed_url, "application/zip")
 
         return Path(out_path)
