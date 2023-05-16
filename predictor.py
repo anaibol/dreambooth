@@ -30,7 +30,8 @@ def run_cmd(command):
 def upload_file_to_signed_url(file_path, signed_url):
     try:
         with open(file_path, "rb") as f:
-            response = requests.put(signed_url, data=f)
+            response = requests.put(
+                signed_url, data=f, content_type="application/zip")
 
         if response.status_code == 200:
             print("File uploaded successfully.")
