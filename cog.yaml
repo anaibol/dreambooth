@@ -17,3 +17,4 @@ build:
     - "rembg==2.0.36"
 
 predict: "predictor.py:Predictor"
+image: "anaibol/whateverai-dreambooth"
