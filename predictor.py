@@ -343,7 +343,7 @@ class Predictor(BasePredictor):
             "log_interval": 10,
             "hflip": False,
             # decode url
-            "gcs_signed_url": urllib.parse.unquote(gcs_signed_url.__target__)
+            "gcs_signed_url": gcs_signed_url
         }
 
         args = Namespace(**args)
