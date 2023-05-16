@@ -7,6 +7,7 @@ from zipfile import ZipFile
 from subprocess import call, check_call
 from argparse import Namespace
 import time
+import urllib.parse
 
 import requests
 import torch
@@ -341,7 +342,8 @@ class Predictor(BasePredictor):
             "logging_dir": "logs",
             "log_interval": 10,
             "hflip": False,
-            "gcs_signed_url": gcs_signed_url,
+            # decode url
+            "gcs_signed_url": urllib.parse.unquote(gcs_signed_url)
         }
 
         args = Namespace(**args)
