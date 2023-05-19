@@ -266,7 +266,6 @@ class Predictor(BasePredictor):
                     output = remove(input, session=session)
                     o.write(output)
 
-            upload_file_to_signed_url(output_path, gcs_signed_url, "image/png")
         if class_data is not None:
             with ZipFile(str(class_data), "r") as zip_ref:
                 for zip_info in zip_ref.infolist():
