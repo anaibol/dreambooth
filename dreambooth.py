@@ -926,8 +926,9 @@ def main(args):
                 progress_bar.set_postfix(**logs)
                 accelerator.log(logs, step=global_step)
 
-            if global_step > 0 and not global_step % args.save_interval and global_step >= args.save_min_steps:
-                save_weights(global_step)
+            # disable saving weights before final step
+            # if global_step > 0 and not global_step % args.save_interval and global_step >= args.save_min_steps:
+            #     save_weights(global_step)
 
             progress_bar.update(1)
             global_step += 1
@@ -940,8 +941,3 @@ def main(args):
     save_weights(global_step)
 
     accelerator.end_training()
-
-
-if __name__ == "__main__":
-    args = parse_args()
-    main(args)
