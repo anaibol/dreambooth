@@ -286,7 +286,6 @@ class Predictor(BasePredictor):
                 f"python convert_original_stable_diffusion_to_diffusers.py --checkpoint_path {ckpt_base} --dump_path {cog_custom_base_data}"
             )
             pretrained_model_name_or_path = cog_custom_base_data
-            pretrained_vae_name_or_path = f"{cog_custom_base_data}/vae"
 
         # some settings are fixed for the replicate model
         args = {
