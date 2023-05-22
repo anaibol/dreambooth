@@ -278,19 +278,14 @@ class Predictor(BasePredictor):
                         zip_info.filename = os.path.basename(zip_info.filename)
                         zip_ref.extract(zip_info, cog_class_data)
 
-        pretrained_model_name_or_path = "runwayml/stable-diffusion-v1-5"
-        pretrained_vae_name_or_path = "stabilityai/sd-vae-ft-mse"
-
-        if ckpt_base is not None:
-            run_cmd(
-                f"python convert_original_stable_diffusion_to_diffusers.py --checkpoint_path {ckpt_base} --dump_path {cog_custom_base_data}"
-            )
-            pretrained_model_name_or_path = cog_custom_base_data
+        run_cmd(
+            f"python convert_original_stable_diffusion_to_diffusers.py --checkpoint_path {ckpt_base} --dump_path {cog_custom_base_data}"
+        )
 
         # some settings are fixed for the replicate model
         args = {
-            "pretrained_model_name_or_path": pretrained_model_name_or_path,
-            "pretrained_vae_name_or_path": pretrained_vae_name_or_path,
+            "pretrained_model_name_or_path": cog_custom_base_data,
+            "pretrained_vae_name_or_path": cog_custom_base_data + "/vae",
             "revision": "fp16",
             "tokenizer_name": None,
             "instance_data_dir": cog_instance_data,
@@ -339,7 +334,6 @@ class Predictor(BasePredictor):
             "logging_dir": "logs",
             "log_interval": 10,
             "hflip": False,
-            # decode url
             "gcs_signed_url": gcs_signed_url
         }
 
