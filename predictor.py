@@ -285,7 +285,7 @@ class Predictor(BasePredictor):
         # some settings are fixed for the replicate model
         args = {
             "pretrained_model_name_or_path": cog_custom_base_data,
-            # "pretrained_vae_name_or_path": "vae",
+            "pretrained_vae_name_or_path": "",
             "revision": "fp16",
             "tokenizer_name": None,
             "instance_data_dir": cog_instance_data,
