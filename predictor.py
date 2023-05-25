@@ -44,8 +44,8 @@ class Predictor(BasePredictor):
     def setup(self):
         # HACK: wait a little bit for instance to be ready
         time.sleep(10)
-        check_call("nvidia-smi", shell=True)
-        assert torch.cuda.is_available()
+        # check_call("nvidia-smi", shell=True)
+        # assert torch.cuda.is_available()
 
     def predict(
         self,
@@ -282,10 +282,15 @@ class Predictor(BasePredictor):
             f"python convert_original_stable_diffusion_to_diffusers.py --checkpoint_path {ckpt_base} --dump_path {cog_custom_base_data}"
         )
 
+        # print all folders in cog_custom_base_data
+        print("Folders in cog_custom_base_data:")
+        for folder in os.listdir(cog_custom_base_data):
+            print(folder)
+
         # some settings are fixed for the replicate model
         args = {
             "pretrained_model_name_or_path": cog_custom_base_data,
-            # "pretrained_vae_name_or_path": cog_custom_base_data + "/vae",
+            "pretrained_vae_name_or_path": cog_custom_base_data + "/vae",
             "revision": "fp16",
             "tokenizer_name": None,
             "instance_data_dir": cog_instance_data,
@@ -341,9 +346,10 @@ class Predictor(BasePredictor):
 
         main(args)
 
-        gc.collect()
-        torch.cuda.empty_cache()
-        call("nvidia-smi")
+        if torch.cuda.is_available():
+            gc.collect()
+            torch.cuda.empty_cache()
+            call("nvidia-smi")
 
         out_path = "output.zip"
 
