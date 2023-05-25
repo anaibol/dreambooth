@@ -801,7 +801,7 @@ def main(args):
             with open(os.path.join(save_dir, "args.json"), "w") as f:
                 json.dump(args.__dict__, f, indent=2)
 
-            shutil.copy("train_inpainting_dreambooth.py", save_dir)
+            shutil.copy("dreambooth.py", save_dir)
 
             pipeline = pipeline.to(accelerator.device)
             pipeline.set_progress_bar_config(disable=True)
