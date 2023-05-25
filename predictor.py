@@ -290,7 +290,7 @@ class Predictor(BasePredictor):
         # some settings are fixed for the replicate model
         args = {
             "pretrained_model_name_or_path": "runwayml/stable-diffusion-inpainting",
-            "pretrained_vae_name_or_path": cog_custom_base_data + "/vae",
+            "pretrained_vae_name_or_path": "stabilityai/sd-vae-ft-mse",
             "revision": "fp16",
             "tokenizer_name": None,
             "instance_data_dir": cog_instance_data,
