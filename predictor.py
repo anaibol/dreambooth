@@ -93,7 +93,7 @@ class Predictor(BasePredictor):
         num_class_images: int = Input(
             description="Minimal class images for prior preservation loss. If not enough images are provided in class_data, additional images will be"
             " sampled with class_prompt.",
-            default=50,
+            default=1,
         ),
         save_sample_prompt: str = Input(
             description="The prompt used to generate sample outputs to save.",
@@ -132,7 +132,7 @@ class Predictor(BasePredictor):
         resolution: int = Input(
             description="The resolution for input images. All the images in the train/validation dataset will be resized to this"
             " resolution.",
-            default=512,
+            default=128,
         ),
         center_crop: bool = Input(
             description="Whether to center crop images before resizing to resolution",
