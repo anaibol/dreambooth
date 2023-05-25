@@ -332,7 +332,7 @@ class Predictor(BasePredictor):
             "save_interval": 10000,  # not used
             "save_min_steps": 0,
             "mixed_precision": "fp16",
-            "not_cache_latents": False,
+            "not_cache_latents": True,
             "local_rank": -1,
             "output_dir": cog_output_dir,
             "concepts_list": None,
